@@ -4,8 +4,9 @@ const User = require('../models/User');
 
 
 require('dotenv').config();
+
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const JWT_SECRET_KEY = process.env.JWT_SECRET;
 
 exports.signup = async (req, res) => {

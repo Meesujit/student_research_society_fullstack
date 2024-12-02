@@ -1,25 +1,27 @@
 import { BrowserRouter as Router, Route, Routes } 
 from 'react-router-dom'
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
+
 import UserDashboard from './components/Dashboard/UserDashboard';
 import AdminDashboard from './components/Dashboard//AdminDashboard';
-import ResearchForm from './components/Research/ResearchForm';
-import ResearchList from './components/Research/ResarchList';
-import EventList from './components/Event/EventList';
-import EventJoin from './components/Event/EventJoin';
+import Home from './pages/starterpage/Home';
+import Navbar from './components/Navbar/Navbar'
+import { useSelector } from 'react-redux';
+import ResearchPage from './pages/researchpage/ResearchPage';
+import EventPage from './pages/eventpage/EventPage';
+import Contact from './pages/contact/Contact';
+
  const  App = () => {
+  const {token} = useSelector((state) => state.auth);
   return (
     <Router>
+        {token && <Navbar />}
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path='/' element={<Home />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/create-research" element={<ResearchForm />} />
-        <Route path="/research-list" element={<ResearchList />} />
-        <Route path="/events" element={<EventList />} />
-        <Route path="/join-event/:id" element={<EventJoin />} />
+        <Route path="/research" element={<ResearchPage />} />
+        <Route path='/events' element={<EventPage />} />
+        <Route path='/contact' element={<Contact />} />
       </Routes>
     </Router>
   );

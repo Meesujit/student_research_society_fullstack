@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchResearches, deleteResearch, approveResearch } from '../../redux/slices/researchSlice';
+import {
+  ResearchListContainer,
+  ListTitle,
+  ResearchItem,
+  ResearchDetails,
+  ButtonGroup,
+} from './ResearchListStyle';
 
 const ResearchList = ({ isAdmin }) => {
   const dispatch = useDispatch();
@@ -9,9 +16,7 @@ const ResearchList = ({ isAdmin }) => {
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchResearches()).catch((error) => {
-        console.error('Failed to fetch research papers:', error);
-      });
+      dispatch(fetchResearches());
     }
   }, [dispatch, user]);
 
@@ -22,59 +27,41 @@ const ResearchList = ({ isAdmin }) => {
     : [];
 
   const handleApprove = (id) => {
-    dispatch(approveResearch(id))
-      .unwrap()
-      .then(() => {
-        console.log('Research paper approved successfully');
-      })
-      .catch((error) => {
-        console.error('Failed to approve research paper:', error);
-      });
+    dispatch(approveResearch(id));
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteResearch(id))
-      .unwrap()
-      .then(() => {
-        console.log('Research paper deleted successfully');
-      })
-      .catch((error) => {
-        console.error('Failed to delete research paper:', error);
-      });
+    dispatch(deleteResearch(id));
   };
 
   return (
-    <div style={{ margin: '20px 20px 0 20px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-      <h3>Research Papers</h3>
+    <ResearchListContainer>
+      <ListTitle>Research Papers</ListTitle>
       <ul>
-        {filteredResearches.length === 0 ? (
-          <p>No research papers available.</p>
-        ) : (
-          filteredResearches.map((research) => (
-            <li key={research._id}>
+        {filteredResearches.map((research) => (
+          <ResearchItem key={research._id}>
+            <ResearchDetails>
               <h4>{research.title}</h4>
               <p>{research.description}</p>
               <p>Status: {research.status}</p>
               {isAdmin && (
                 <>
-                  <p>Submitted by: {research.user.name} </p>
-                  <p>Email: {research.user.email} </p>
-                  <div>
-                    <button
-                      onClick={() => handleApprove(research._id)}
-                      disabled={research.status === 'Approved'} // Disable if already approved
-                    >
+                  <p>Submitted by: {research.user.name}</p>
+                  <ButtonGroup>
+                    <button className="approve" onClick={() => handleApprove(research._id)} disabled={research.status === 'Approved'}>
                       {research.status === 'Approved' ? 'Approved' : 'Approve'}
                     </button>
-                    <button onClick={() => handleDelete(research._id)}>Delete</button>
-                  </div>
+                    <button className="delete" onClick={() => handleDelete(research._id)}>
+                      Delete
+                    </button>
+                  </ButtonGroup>
                 </>
               )}
-            </li>
-          ))
-        )}
+            </ResearchDetails>
+          </ResearchItem>
+        ))}
       </ul>
-    </div>
+    </ResearchListContainer>
   );
 };
 

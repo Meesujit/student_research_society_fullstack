@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/slices/authSlice';
 import {useNavigate} from 'react-router-dom';
+import { Button, ErrorMessage, Form, Input } from './AuthStyle';
+
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
 
@@ -31,10 +33,10 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <h3>Login</h3>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Input
         type="email"
         name="email"
         placeholder="Email"
@@ -42,7 +44,7 @@ const Login = () => {
         onChange={handleChange}
         required
       />
-      <input
+      <Input
         type="password"
         name="password"
         placeholder="Password"
@@ -50,10 +52,10 @@ const Login = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../../redux/slices/authSlice';
 import {useNavigate} from 'react-router-dom';
+import { Button, ErrorMessage, Form, Input } from './AuthStyle';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -28,10 +29,10 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <h3>Register</h3>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <Input
         type="text"
         name="name"
         placeholder="Name"
@@ -39,7 +40,7 @@ const Register = () => {
         onChange={handleChange}
         required
       />
-      <input
+      <Input
         type="email"
         name="email"
         placeholder="Email"
@@ -47,7 +48,7 @@ const Register = () => {
         onChange={handleChange}
         required
       />
-      <input
+      <Input
         type="password"
         name="password"
         placeholder="Password"
@@ -55,10 +56,10 @@ const Register = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading}>
         {loading ? 'Registering...' : 'Register'}
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
 

@@ -3,18 +3,21 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
+import { LogoutButton } from './LogoutButton';
+
 const Logout = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());
-        navigate('/login');
+        localStorage.removeItem('token');
+        navigate('/');
     }
   return (
-    <button onClick={handleLogout} style={{ padding: '10px', margin: '10px' }}>
+    <LogoutButton onClick={handleLogout} style={{ padding: '10px', margin: '10px' }}>
     Logout
-  </button>
+  </LogoutButton>
   )
 }
 

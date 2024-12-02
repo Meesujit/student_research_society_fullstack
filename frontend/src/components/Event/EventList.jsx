@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEvents, participateInEvent } from '../../redux/slices/eventSlice';
+import { EventListContainer, EventTitle, EventItem, JoinButton } from './EventListStyle';
 
 const EventList = ({ isAdmin }) => {
   const dispatch = useDispatch();
@@ -23,27 +24,31 @@ const EventList = ({ isAdmin }) => {
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h3>{isAdmin ? 'Event List (Admin View)' : 'Available Events'}</h3>
+    <EventListContainer>
+      <EventTitle>{isAdmin ? 'Event List (Admin View)' : 'Available Events'}</EventTitle>
       {events.length === 0 ? (
         <p>No events available.</p>
       ) : (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {events.map((event) => (
-            <li key={event._id} style={{ marginBottom: '20px', border: '1px solid #ddd', padding: '10px', borderRadius: '5px' }}>
+            <EventItem key={event._id}>
               <h4>{event.name}</h4>
               <p><strong>Description:</strong> {event.description}</p>
               <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
 
               {isAdmin ? (
-                // Admin View: Show Participants
                 <>
                   <h5>Participants:</h5>
                   {event.participants.length > 0 ? (
                     <ul>
                       {event.participants.map((participant) => (
                         <li key={participant._id}>
-                          {participant.name} ({participant.email})
+                          <p>
+                          Name: {participant.name} 
+                          </p>
+                          <p>
+                          Email: {participant.email}
+                          </p>
                         </li>
                       ))}
                     </ul>
@@ -52,28 +57,18 @@ const EventList = ({ isAdmin }) => {
                   )}
                 </>
               ) : (
-                // User View: Show Join Button
-                <button
+                <JoinButton
                   onClick={() => handleJoin(event._id)}
-                  disabled={event.participants.includes(profile?._id)} // Disable if already joined
-                  style={{
-                    padding: '5px 10px',
-                    backgroundColor: event.participants.includes(profile?._id) ? 'gray' : 'green',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: event.participants.includes(profile?._id) ? 'not-allowed' : 'pointer',
-                  }}
+                  disabled={event.participants.includes(profile?._id)}
                 >
                   {event.participants.includes(profile?._id) ? 'Joined' : 'Join Event'}
-                </button>
-
+                </JoinButton>
               )}
-            </li>
+            </EventItem>
           ))}
         </ul>
       )}
-    </div>
+    </EventListContainer>
   );
 };
 

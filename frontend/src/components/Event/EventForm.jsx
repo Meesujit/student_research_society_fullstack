@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEvent } from '../../redux/slices/eventSlice';
+import { EventFormContainer, Form, FormTitle, Input, Textarea, SubmitButton } from './EventFormStyle';
 
 const EventForm = () => {
   const dispatch = useDispatch();
@@ -18,38 +19,20 @@ const EventForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createEvent(formData)); // Send only the form data
-    console.log('Event Submitted:', formData);
+    dispatch(createEvent(formData));
   };
 
   useEffect(() => {
     if (error) {
-      alert(error); // Show error message if event creation fails
+      alert(error);
     }
   }, [error]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '60vh',
-        flexDirection: 'column',
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '20px',
-          flexDirection: 'column',
-        }}
-      >
-        <h3>Create Event</h3>
-        <input
+    <EventFormContainer>
+      <Form onSubmit={handleSubmit}>
+        <FormTitle>Create Event</FormTitle>
+        <Input
           type="text"
           name="name"
           placeholder="Event Name"
@@ -57,25 +40,25 @@ const EventForm = () => {
           onChange={handleChange}
           required
         />
-        <textarea
+        <Textarea
           name="description"
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
           required
-        ></textarea>
-        <input
+        />
+        <Input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
           required
         />
-        <button type="submit" disabled={loading}>
+        <SubmitButton type="submit" disabled={loading}>
           {loading ? 'Creating...' : 'Create Event'}
-        </button>
-      </form>
-    </div>
+        </SubmitButton>
+      </Form>
+    </EventFormContainer>
   );
 };
 
